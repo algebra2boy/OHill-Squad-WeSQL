@@ -37,6 +37,8 @@ pip install <the name of the package>
 - sql.connector.cursor().execute(query)
 - [sql.connector.commit()](https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-commit.html)
     - to commit the current transaction, by default Python does not autocommit (commiting is one of the way for isolation level)
+- [cursor.fetchall()](https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-fetchall.html)
+    - fetches all (or all remaining rows) of a query result set and result a list of tuples. If no more rows are available, it returns an empty list.
 
 ## Resources
 - [freeCodeCamp](https://www.freecodecamp.org/news/connect-python-with-sql/)
