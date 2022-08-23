@@ -1,72 +1,8 @@
 import mysql.connector as connector
 from mysql.connector import Error
 import pandas as pd
-
-create_database_query = "CREATE DATABASE OHILL;"
-create_living_area = """
-Create table living_area (
-    campus_Area varchar(30),
-    building_name varchar(30),
-    Honor BIT(1),
-    primary key (campus_Area, building_name)
-);
-"""
-
-create_class = """
-create table class(
-    id integer,
-    professor_name varchar(255),
-    class_name varchar(255),
-    department varchar(20),
-    primary key (department, id)
-);
-"""
-
-create_student = """
-create table student(
-    id integer primary key,
-    name varchar(30),
-    year integer,
-    campus_Area varchar(30),
-    building_name varchar(30),
-    foreign key (campus_Area, building_name) references living_area (campus_Area, building_name)
-);
-
-"""
-pop_living_area = """
-INSERT INTO living_area (campus_Area, building_name, Honor) VALUES
-("OHill", "Webster", 0),
-("OHill", "Grayson", 0),
-("OHill", "Field", 0),
-("Commonwealth", "Elm", 1),
-("Northeast", "Crabtree", 0),
-("Central", "Brook", 0)
-"""
-
-
-pop_Students = """
-INSERT INTO student (id, name, year, campus_Area, building_name) Values
-(1, "Yongye", 2, "OHill", "Webster"),
-(2, "Anan", 3, "Commonwealth", "Elm"),
-(3, "Jeff", 3, "OHill", "Grayson"),
-(4, "Matt", 3, "OHill", "Field"),
-(5, "Tina", 2, "Northeast", "Crabtree"),
-(6, "Adam", 3, "OHill", "Grayson"),
-(7, "Eric", 4, "Central", "Brook"),
-(8, "Navid", 4, "OHill", "Grayson")
-"""
-
-pop_Class = """
-INSERT INTO class (department, id, class_name, professor_name) VALUES
-("CS", 345 , "Practice and Applications of Data Management", "Jaime Davila"),
-("CS", 220 , "Programming Methologies", "Marius Minea "),
-("CS", 230 , "Computer Systems Principles", "Meng-Chieh Chiu"),
-("CS", 240 , "Reasoning under Uncertainty", "Andrew Lan"),
-("CS", 250 , "Introductio to Computation", "David Barrington"),
-("CS", 311, "Introduction to Algorithms", "Marius Minea"),
-("Math", 235, "Linear Algebra", "TBA"),
-("Math", 331, "Ordinary Differential Equations", "Garrett Cahill")
-"""
+from create_and_update import * 
+from query import * 
 
 
 def create_server_connection(host_name: str, user_name: str, user_password: str):
@@ -114,6 +50,18 @@ def execute_query(connection, query):
     except Error as err:
         print(f"Error: '{err}")
 
+
+# Reading data / retrieve Resultset from the database
+def read_query(connection, query):
+    cursor = connection.cursor()
+    resultSet = None
+    try:
+        cursor.execute(query)
+        resultSet = cursor.fetchall()
+        return result
+    except Error as err:
+        print(f"Error: '{err}")
+
 def main():
     # this connection is used to connect to the mySQL 
     connection = create_server_connection("127.0.0.1", "root", "root12ab")
@@ -134,6 +82,11 @@ def main():
     execute_query(db, pop_Students)
     execute_query(db, pop_Class)
 
+    # creating a relation
+    execute_query(db, create_student_take_class_relation)
+
+    # inserting values into the relation
+    execute_query(db, pop_student_take_class)
     
 
 if __name__ == "__main__":
