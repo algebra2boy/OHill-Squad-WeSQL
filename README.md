@@ -1,6 +1,8 @@
 ## What this is about
 I took CS 345, which is about Database Management, and the class did not teach us much about how to connect the database with Python or other major languages. 
-I wanted to learn how to create and manipulate SQL databases with Python through this personal project.
+I wanted to learn how to create and manipulate SQL databases with Python through this personal project. All the names and data are from my classes, or my friends, 
+and our classes. 
+
 
 ## How to access to the [mySQL panel](https://stackoverflow.com/questions/35858052/how-to-fix-command-not-found-mysql-in-zsh)
 - Export the path every time you open the terminal
@@ -21,6 +23,7 @@ I wanted to learn how to create and manipulate SQL databases with Python through
 
 ## Library
 - mysql-connector-python
+- pandas
 
 Remember to install the package with the following command
 ```
