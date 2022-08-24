@@ -1,9 +1,9 @@
 import mysql.connector as connector
 from mysql.connector import Error
 import pandas as pd
-from create_and_update import * 
+from create_and_insert import * 
 from query import * 
-
+from update_and_delete import *
 
 def create_server_connection(host_name: str, user_name: str, user_password: str):
     connection = None
@@ -58,7 +58,7 @@ def read_query(connection, query):
     try:
         cursor.execute(query)
         resultSet = cursor.fetchall()
-        return result
+        return resultSet
     except Error as err:
         print(f"Error: '{err}")
 
@@ -87,7 +87,35 @@ def main():
 
     # inserting values into the relation
     execute_query(db, pop_student_take_class)
+
+    print("printing all the students from 'student' table")
+    student_result_set = read_query(db, get_all_student_query)
+    for result in student_result_set:
+        print(result)
     
+    # format the resultset with dataframe
+    form_db = []
+
+    print("\nprinting students who live in OHill")
+    student_OHill_result_set = read_query(db, student_who_live_in_OHILL)
+    for result in student_OHill_result_set:
+        print(result)
+        form_db.append(list(result))
+    
+    print("\n with prettier layout")
+    columns = ['student_id', 'student_name', 'year','Campus_Area', "Building_name"]
+    df = pd.DataFrame(form_db, columns=columns)
+    print(df)
+
+
+    # updating the student table 
+    execute_query(db, pop_thatcher)
+    execute_query(db, update_Yongye_location)
+    execute_query(db, update_eric_location)
+    student_result_set = read_query(db, get_all_student_query)
+    for result in student_result_set:
+        print(result)
+
 
 if __name__ == "__main__":
     main()
